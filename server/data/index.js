@@ -1,6 +1,15 @@
 import mongoose from "mongoose";
 
-const ids = [
+const userIds = [
+  new mongoose.Types.ObjectId(),
+  new mongoose.Types.ObjectId(),
+  new mongoose.Types.ObjectId(),
+  new mongoose.Types.ObjectId(),
+  new mongoose.Types.ObjectId(),
+  new mongoose.Types.ObjectId(),
+];
+
+const commentIds = [
   new mongoose.Types.ObjectId(),
   new mongoose.Types.ObjectId(),
   new mongoose.Types.ObjectId(),
@@ -11,7 +20,7 @@ const ids = [
 
 export const users = [
   {
-    _id: ids[0],
+    _id: userIds[0],
     firstName: "John",
     lastName: "Doe",
     email: "john@doe.com",
@@ -27,7 +36,7 @@ export const users = [
     __v: 0,
   },
   {
-    _id: ids[1],
+    _id: userIds[1],
     firstName: "Jane",
     lastName: "Smith",
     email: "jane@smith.com",
@@ -43,7 +52,7 @@ export const users = [
     __v: 0,
   },
   {
-    _id: ids[2],
+    _id: userIds[2],
     firstName: "Alice",
     lastName: "Johnson",
     email: "alice@johnson.com",
@@ -59,7 +68,7 @@ export const users = [
     __v: 0,
   },
   {
-    _id: ids[3],
+    _id: userIds[3],
     firstName: "Michael",
     lastName: "Brown",
     email: "michael@brown.com",
@@ -75,7 +84,7 @@ export const users = [
     __v: 0,
   },
   {
-    _id: ids[4],
+    _id: userIds[4],
     firstName: "Emily",
     lastName: "Taylor",
     email: "emily@taylor.com",
@@ -91,7 +100,7 @@ export const users = [
     __v: 0,
   },
   {
-    _id: ids[5],
+    _id: userIds[5],
     firstName: "David",
     lastName: "Wilson",
     email: "david@wilson.com",
@@ -111,37 +120,76 @@ export const users = [
 export const posts = [
   {
     content: "Having breakfast in the city.",
-    user: ids[0],
+    user: userIds[0],
     picturePath: "post1.jpg",
-    likes: [ids[1], ids[2], ids[3], ids[4]],
-    comments: [],
+    likes: [userIds[1], userIds[2], userIds[3], userIds[4]],
+    comments: [commentIds[0]],
   },
   {
     content: "A lovely day in the city.",
-    user: ids[1],
+    user: userIds[1],
     picturePath: "post2.jpg",
-    likes: [ids[0], ids[2]],
-    comments: [],
+    likes: [userIds[0], userIds[2]],
+    comments: [commentIds[1], commentIds[5]],
   },
   {
     content: "Enjoying nature's beauty.",
-    user: ids[2],
+    user: userIds[2],
     picturePath: "post3.jpg",
-    likes: [ids[0], ids[1], ids[3]],
-    comments: [],
+    likes: [userIds[0], userIds[1], userIds[3]],
+    comments: [commentIds[2]],
   },
   {
     content: "Exploring new places!",
-    user: ids[3],
+    user: userIds[3],
     picturePath: "post4.jpg",
-    likes: [ids[0], ids[2]],
-    comments: [],
+    likes: [userIds[0], userIds[2]],
+    comments: [commentIds[3]],
   },
   {
     content: "Relaxing by the beach.",
-    user: ids[4],
+    user: userIds[4],
     picturePath: "post5.jpg",
-    likes: [ids[0], ids[1]],
-    comments: [],
+    likes: [userIds[0], userIds[1]],
+    comments: [commentIds[4]],
+  },
+];
+
+export const comments = [
+  {
+    _id: commentIds[0],
+    content: "Looks delicious!",
+    user: userIds[1],
+    post: posts[0]._id,
+  },
+  {
+    _id: commentIds[1],
+    content: "Looks like a fun time!",
+    user: userIds[2],
+    post: posts[1]._id,
+  },
+  {
+    _id: commentIds[2],
+    content: "Nature's beauty indeed!",
+    user: userIds[3],
+    post: posts[2]._id,
+  },
+  {
+    _id: commentIds[3],
+    content: "Wish I could be there!",
+    user: userIds[4],
+    post: posts[3]._id,
+  },
+  {
+    _id: commentIds[4],
+    content: "So serene!",
+    user: userIds[0],
+    post: posts[4]._id,
+  },
+  {
+    _id: commentIds[5],
+    content: "Wish I could be there!",
+    user: userIds[4],
+    post: posts[2]._id,
   },
 ];
