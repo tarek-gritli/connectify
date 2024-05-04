@@ -39,13 +39,13 @@ const PostWidget = ({ _id, user, content, picturePath, likes, comments }) => {
     const updatedPost = response.data;
     dispatch(setPost({ post: updatedPost }));
   };
-  const name = `${user.firstName} ${user.lastName}`;
+  const name = `${user?.firstName} ${user?.lastName}`;
   return (
     <WidgetWrapper m="2rem 0">
       <Friend
-        friendId={user._id}
+        friendId={user?._id}
         name={name}
-        userPicturePath={user.picturePath}
+        userPicturePath={user?.picturePath}
       />
       <Typography color={main} sx={{ mt: "1rem" }}>
         {content}
