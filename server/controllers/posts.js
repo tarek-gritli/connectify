@@ -4,7 +4,7 @@ import Comment from "../models/Comment.js";
 
 export const createPost = async (req, res) => {
   try {
-    const { userId, content, picturePath } = req.body;
+    const { userId, content, picturePath } = req.body.values;
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ message: "User not found" });
     const newPost = new Post({
@@ -75,7 +75,7 @@ export const getUserPosts = async (req, res) => {
   }
 };
 
-export const likePost = async (req, res) => {
+export const likeUnlikePost = async (req, res) => {
   try {
     const { postId } = req.params;
     const { userId } = req.body;
@@ -83,33 +83,26 @@ export const likePost = async (req, res) => {
     const post = await Post.findById(postId);
     if (!user) return res.status(404).json({ message: "User not found" });
     if (!post) return res.status(404).json({ message: "Post not found" });
-    const updatedPost = await Post.findByIdAndUpdate(
-      postId,
-      { $addToSet: { likes: userId } },
-      { new: true }
-    );
+    const isLiked = post.likes.includes(userId);
+    if (isLiked) {
+      post.likes = post.likes.filter((id) => id === userId);
+    } else {
+      post.likes.push(userId);
+    }
+    await post.save();
+    const updatedPost = await Post.findById(postId)
+      .populate("user", "firstName lastName picturePath")
+      .populate({
+        path: "comments",
+        populate: {
+          path: "user",
+          select: "firstName lastName picturePath",
+        },
+      })
+      .populate("likes", "firstName lastName picturePath");
     res.status(200).json(updatedPost);
   } catch (error) {
     res.status(500).json({ error: error.message });
-  }
-};
-
-export const unlikePost = async (req, res) => {
-  try {
-    const { postId } = req.params;
-    const { userId } = req.body;
-    const user = await User.findById(userId);
-    const post = await Post.findById(postId);
-    if (!user) return res.status(404).json({ message: "User not found" });
-    if (!post) return res.status(404).json({ message: "Post not found" });
-    const updatedPost = await Post.findByIdAndUpdate(
-      postId,
-      { $pull: { likes: userId } },
-      { new: true }
-    );
-    res.status(200).json(updatedPost);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
   }
 };
 

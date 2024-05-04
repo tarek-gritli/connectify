@@ -19,7 +19,7 @@ export const getUserFriends = async (req, res) => {
     const { id } = req.params;
     const user = await User.findById(id).populate(
       "friends",
-      "firstName lastName picturePath location occupation"
+      "firstName lastName picturePath"
     );
     if (!user) {
       return res.status(404).json({ message: "No user found" });
@@ -34,7 +34,7 @@ export const addFriend = async (req, res) => {
   try {
     const { id, friendId } = req.params;
     const user = await User.findById(id);
-    const friend = await Post.findById(friendId);
+    const friend = await User.findById(friendId);
     if (!user) return res.status(404).json({ message: "User not found" });
     if (!friend) return res.status(404).json({ message: "Friend not found" });
     //add friend to user's friends list
@@ -42,7 +42,7 @@ export const addFriend = async (req, res) => {
       id,
       { $addToSet: { friends: friendId } },
       { new: true }
-    ).populate("friends", "firstName lastName picturePath location occupation");
+    ).populate("friends", "firstName lastName picturePath");
     //add user to friend's friends list
     await User.findByIdAndUpdate(
       friendId,
@@ -59,7 +59,7 @@ export const removeFriend = async (req, res) => {
   try {
     const { id, friendId } = req.params;
     const user = await User.findById(id);
-    const friend = await Post.findById(friendId);
+    const friend = await User.findById(friendId);
     if (!user) return res.status(404).json({ message: "User not found" });
     if (!friend) return res.status(404).json({ message: "Friend not found" });
     //remove friend from user's friends list
@@ -67,7 +67,7 @@ export const removeFriend = async (req, res) => {
       id,
       { $pull: { friends: friendId } },
       { new: true }
-    ).populate("friends", "firstName lastName picturePath occupation location");
+    ).populate("friends", "firstName lastName picturePath");
     //remove user from friend's friends list
     await User.findByIdAndUpdate(
       friendId,
