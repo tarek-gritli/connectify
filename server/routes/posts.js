@@ -2,8 +2,7 @@ import express from "express";
 import {
   getFeed,
   getUserPosts,
-  likePost,
-  unlikePost,
+  likeUnlikePost,
   commentPost,
   deletePost,
   createPost,
@@ -17,8 +16,7 @@ router.get("/user/:id", verifyToken, getUserPosts);
 
 router.post("/create", verifyToken, createPost);
 
-router.patch("/like/:postId", verifyToken, likePost);
-router.patch("/unlike/:postId", verifyToken, unlikePost);
+router.patch("/like/:postId", verifyToken, likeUnlikePost);
 router.patch("/comment/:postId", verifyToken, commentPost);
 
 router.delete("/delete/:postId", verifyToken, deletePost);
