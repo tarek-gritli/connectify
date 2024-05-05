@@ -1,6 +1,7 @@
-import { Box, useMediaQuery } from "@mui/material";
+import { Box, useMediaQuery, Button } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import FriendListWidget from "../components/FriendListWidget";
@@ -8,12 +9,34 @@ import MyPostWidget from "../components/MyPostWidget";
 import PostsWidget from "../components/PostsWidget";
 import UserWidget from "../components/UserWidget";
 import axios from "axios";
+import { setLogout } from "../state/reducers/auth";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
   const { userId } = useParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const loggedInUserId = useSelector((state) => state.user._id);
   const token = useSelector((state) => state.token);
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
+
+  const deleteAccount = async () => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:3000/users/delete/${loggedInUserId}`,
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+      console.log(response);
+      dispatch(setLogout());
+      navigate("/login");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
     const getUser = async () => {
@@ -47,6 +70,14 @@ const Profile = () => {
       >
         <Box flexBasis={isNonMobileScreens ? "26%" : undefined}>
           <UserWidget userId={userId} picturePath={user.picturePath} />
+          <Box m="2rem 0" />
+          {loggedInUserId === userId && (
+            <Box mt="2rem" display="flex" justifyContent="center">
+              <Button variant="contained" color="error" onClick={deleteAccount}>
+                Delete Account
+              </Button>
+            </Box>
+          )}
           <Box m="2rem 0" />
           <FriendListWidget userId={userId} />
         </Box>
