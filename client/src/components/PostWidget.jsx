@@ -23,6 +23,7 @@ import UserImage from "./UserImage";
 import axios from "axios";
 const PostWidget = ({ _id, user, content, picturePath, likes, comments }) => {
   const [isComments, setIsComments] = useState(false);
+  const [isLikes, setIsLikes] = useState(false);
   const [newComment, setNewComment] = useState("");
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
@@ -98,11 +99,23 @@ const PostWidget = ({ _id, user, content, picturePath, likes, comments }) => {
                 <FavoriteBorderOutlined />
               )}
             </IconButton>
-            <Typography>{likeCount}</Typography>
+            <Typography
+              onClick={() => {
+                setIsLikes(!isLikes);
+                if (isComments) setIsComments(false);
+              }}
+              sx={{ cursor: "pointer" }}
+            >
+              {likeCount}
+            </Typography>
           </FlexBetween>
-
           <FlexBetween gap="0.3rem">
-            <IconButton onClick={() => setIsComments(!isComments)}>
+            <IconButton
+              onClick={() => {
+                setIsComments(!isComments);
+                if (isLikes) setIsLikes(false);
+              }}
+            >
               <ChatBubbleOutlineOutlined />
             </IconButton>
             <Typography>{comments.length}</Typography>
@@ -113,48 +126,67 @@ const PostWidget = ({ _id, user, content, picturePath, likes, comments }) => {
           <ShareOutlined />
         </IconButton>
       </FlexBetween>
-      {isComments && (
-        <Box mt="0.5rem">
-          {comments.map((comment, i) => (
-            <Box key={`${name}-${i}`}>
-              <Divider />
-              <FlexBetween>
+      {isLikes && (
+        <>
+          <Box mt="0.5rem">
+            <Typography>Likes</Typography>
+            {likes?.map((user, i) => (
+              <Box key={`${name}-${i}`}>
+                <Divider />
                 <FlexBetween>
-                  <UserImage image={comment?.user?.picturePath} />
+                  <UserImage image={user?.picturePath} />
                   <Typography variant="subtitle2">
-                    {comment?.user?.firstName} {comment?.user?.lastName}
+                    {user?.firstName} {user?.lastName}
                   </Typography>
                 </FlexBetween>
-                <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
-                  {comment.content}
-                </Typography>
-              </FlexBetween>
-            </Box>
-          ))}
-          <Divider />
-        </Box>
+              </Box>
+            ))}
+            <Divider />
+          </Box>
+        </>
       )}
       {isComments && (
-        <Box mt="0.5rem">
-          <TextField
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            label="Add a comment"
-            variant="outlined"
-            fullWidth
-            multiline
-          />
-          <Box mt="0.5rem" display="flex" justifyContent="flex-end">
-            <Button
-              onClick={handleAddComment}
-              variant="contained"
-              color="primary"
-              disabled={!newComment}
-            >
-              Add Comment
-            </Button>
+        <>
+          <Box mt="0.5rem">
+            {comments.map((comment, i) => (
+              <Box key={`${name}-${i}`}>
+                <Divider />
+                <FlexBetween>
+                  <FlexBetween>
+                    <UserImage image={comment?.user?.picturePath} />
+                    <Typography variant="subtitle2">
+                      {comment?.user?.firstName} {comment?.user?.lastName}
+                    </Typography>
+                  </FlexBetween>
+                  <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
+                    {comment.content}
+                  </Typography>
+                </FlexBetween>
+              </Box>
+            ))}
+            <Divider />
           </Box>
-        </Box>
+          <Box mt="0.5rem">
+            <TextField
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              label="Add a comment"
+              variant="outlined"
+              fullWidth
+              multiline
+            />
+            <Box mt="0.5rem" display="flex" justifyContent="flex-end">
+              <Button
+                onClick={handleAddComment}
+                variant="contained"
+                color="primary"
+                disabled={!newComment}
+              >
+                Add Comment
+              </Button>
+            </Box>
+          </Box>
+        </>
       )}
     </WidgetWrapper>
   );
