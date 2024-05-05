@@ -4,22 +4,33 @@ import {
   FavoriteOutlined,
   ShareOutlined,
 } from "@mui/icons-material";
-import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Divider,
+  IconButton,
+  Typography,
+  useTheme,
+  Button,
+  TextField,
+} from "@mui/material";
 import FlexBetween from "./FlexBetween";
 import Friend from "./Friend";
 import WidgetWrapper from "./WidgetWrapper";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "../state/reducers/auth";
+import UserImage from "./UserImage";
 import axios from "axios";
 const PostWidget = ({ _id, user, content, picturePath, likes, comments }) => {
   const [isComments, setIsComments] = useState(false);
+  const [newComment, setNewComment] = useState("");
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user._id);
   const isLiked = likes.find((user) => user._id === loggedInUserId) != null;
 
   const likeCount = likes.length;
+  console.log(comments);
 
   const { palette } = useTheme();
   const main = palette.neutral.main;
@@ -38,6 +49,24 @@ const PostWidget = ({ _id, user, content, picturePath, likes, comments }) => {
 
     const updatedPost = response.data;
     dispatch(setPost({ post: updatedPost }));
+  };
+  const handleAddComment = async () => {
+    try {
+      const response = await axios.patch(
+        `http://localhost:3000/posts/comment/${_id}`,
+        { userId: loggedInUserId, comment: newComment },
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+      const updatedPost = response.data;
+      dispatch(setPost({ post: updatedPost }));
+      setNewComment("");
+    } catch (err) {
+      console.log(err);
+    }
   };
   const name = `${user?.firstName} ${user?.lastName}`;
   return (
@@ -89,12 +118,42 @@ const PostWidget = ({ _id, user, content, picturePath, likes, comments }) => {
           {comments.map((comment, i) => (
             <Box key={`${name}-${i}`}>
               <Divider />
-              <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
-                {comment.content}
-              </Typography>
+              <FlexBetween>
+                <FlexBetween>
+                  <UserImage image={comment?.user?.picturePath} />
+                  <Typography variant="subtitle2">
+                    {comment?.user?.firstName} {comment?.user?.lastName}
+                  </Typography>
+                </FlexBetween>
+                <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
+                  {comment.content}
+                </Typography>
+              </FlexBetween>
             </Box>
           ))}
           <Divider />
+        </Box>
+      )}
+      {isComments && (
+        <Box mt="0.5rem">
+          <TextField
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            label="Add a comment"
+            variant="outlined"
+            fullWidth
+            multiline
+          />
+          <Box mt="0.5rem" display="flex" justifyContent="flex-end">
+            <Button
+              onClick={handleAddComment}
+              variant="contained"
+              color="primary"
+              disabled={!newComment}
+            >
+              Add Comment
+            </Button>
+          </Box>
         </Box>
       )}
     </WidgetWrapper>

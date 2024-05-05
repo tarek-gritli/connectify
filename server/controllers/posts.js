@@ -124,7 +124,16 @@ export const commentPost = async (req, res) => {
       postId,
       { $push: { comments: newComment._id } },
       { new: true }
-    );
+    )
+      .populate("user", "firstName lastName picturePath")
+      .populate({
+        path: "comments",
+        populate: {
+          path: "user",
+          select: "firstName lastName picturePath",
+        },
+      })
+      .populate("likes", "firstName lastName picturePath");
     res.status(200).json(updatedPost);
   } catch (err) {
     res.status(500).json({ error: err.message });
