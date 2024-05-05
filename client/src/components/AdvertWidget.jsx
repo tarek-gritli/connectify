@@ -23,14 +23,11 @@ const AdvertWidget = () => {
         style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
       />
       <FlexBetween>
-        <Typography color={main}>Cosmetics</Typography>
-        <Typography color={medium}>cosmetics.com</Typography>
+        <Typography color={main}>Oat Milk</Typography>
+        <Typography color={medium}>7lib.com</Typography>
       </FlexBetween>
       <Typography color={medium} m="0.5rem 0">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis
-        optio nostrum nulla veritatis neque aperiam, ex excepturi ducimus minima
-        vitae! Repellat sunt quia reiciendis quae expedita dolore suscipit
-        eveniet a.
+        Bakou 7lib bnin barcha ykhalik 9wey w kesa7 khater fih vitamine A
       </Typography>
     </WidgetWrapper>
   );
