@@ -6,7 +6,7 @@ import { setFriends } from "../state/reducers/auth";
 import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
 import axios from "axios";
-const Friend = ({ friendId, name, userPicturePath }) => {
+const Friend = ({ friendId, name, userPicturePath, location }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { _id, friends } = useSelector((state) => state.user);
@@ -68,7 +68,7 @@ const Friend = ({ friendId, name, userPicturePath }) => {
             {name}
           </Typography>
           <Typography color={medium} fontSize="0.75rem">
-            {"location"}
+            {location}
           </Typography>
         </Box>
       </FlexBetween>

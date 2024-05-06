@@ -15,7 +15,7 @@ export const createPost = async (req, res) => {
     const newSavedPost = await newPost.save();
     const post = await Post.findById(newSavedPost._id).populate(
       "user",
-      "firstName lastName picturePath"
+      "firstName lastName picturePath location"
     );
     res.status(201).json(post);
   } catch (err) {
@@ -38,7 +38,7 @@ export const deletePost = async (req, res) => {
 export const getFeed = async (req, res) => {
   try {
     const posts = await Post.find()
-      .populate("user", "firstName lastName picturePath")
+      .populate("user", "firstName lastName picturePath location")
       .populate({
         path: "comments",
         populate: {
@@ -59,7 +59,7 @@ export const getUserPosts = async (req, res) => {
     const user = await User.findById(id);
     if (!user) return res.status(404).json({ message: "User not found" });
     const posts = await Post.find({ user: id })
-      .populate("user", "firstName lastName picturePath")
+      .populate("user", "firstName lastName picturePath location")
       .populate({
         path: "comments",
         populate: {
@@ -91,7 +91,7 @@ export const likeUnlikePost = async (req, res) => {
     }
     await post.save();
     const updatedPost = await Post.findById(postId)
-      .populate("user", "firstName lastName picturePath")
+      .populate("user", "firstName lastName picturePath location")
       .populate({
         path: "comments",
         populate: {
@@ -125,7 +125,7 @@ export const commentPost = async (req, res) => {
       { $push: { comments: newComment._id } },
       { new: true }
     )
-      .populate("user", "firstName lastName picturePath")
+      .populate("user", "firstName lastName picturePath location")
       .populate({
         path: "comments",
         populate: {

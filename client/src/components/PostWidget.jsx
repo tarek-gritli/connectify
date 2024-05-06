@@ -88,6 +88,7 @@ const PostWidget = ({ _id, user, content, picturePath, likes, comments }) => {
       <Friend
         friendId={user?._id}
         name={name}
+        location={user?.location}
         userPicturePath={user?.picturePath}
       />
       <Typography color={main} sx={{ mt: "1rem" }}>
