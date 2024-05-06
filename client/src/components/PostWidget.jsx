@@ -3,6 +3,7 @@ import {
   FavoriteBorderOutlined,
   FavoriteOutlined,
   ShareOutlined,
+  DeleteOutlineOutlined,
 } from "@mui/icons-material";
 import {
   Box,
@@ -69,6 +70,18 @@ const PostWidget = ({ _id, user, content, picturePath, likes, comments }) => {
       console.log(err);
     }
   };
+  const handleDeletePost = async () => {
+    try {
+      await axios.delete(`http://localhost:3000/posts/delete/${_id}`, {
+        headers: {
+          authorization: token,
+        },
+      });
+      window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const name = `${user?.firstName} ${user?.lastName}`;
   return (
     <WidgetWrapper m="2rem 0">
@@ -121,10 +134,16 @@ const PostWidget = ({ _id, user, content, picturePath, likes, comments }) => {
             <Typography>{comments.length}</Typography>
           </FlexBetween>
         </FlexBetween>
-
-        <IconButton>
-          <ShareOutlined />
-        </IconButton>
+        <FlexBetween>
+          <IconButton>
+            <ShareOutlined />
+          </IconButton>
+          {loggedInUserId === user?._id && (
+            <IconButton onClick={handleDeletePost}>
+              <DeleteOutlineOutlined />
+            </IconButton>
+          )}
+        </FlexBetween>
       </FlexBetween>
       {isLikes && (
         <>

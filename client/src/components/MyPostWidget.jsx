@@ -61,6 +61,7 @@ const MyPostWidget = ({ picturePath }) => {
       dispatch(setPosts({ posts }));
       setImage(null);
       setPost("");
+      window.location.reload();
     } catch (err) {
       console.log(err);
     }

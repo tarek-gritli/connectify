@@ -30,7 +30,6 @@ const Profile = () => {
           },
         }
       );
-      console.log(response);
       dispatch(setLogout());
       navigate("/login");
     } catch (err) {
