@@ -4,7 +4,7 @@ import {
   LocationOnOutlined,
   WorkOutlineOutlined,
 } from "@mui/icons-material";
-import { Box, Typography, Divider, useTheme } from "@mui/material";
+import { Box, Typography, Divider, useTheme, IconButton } from "@mui/material";
 import UserImage from "./UserImage";
 import FlexBetween from "./FlexBetween";
 import WidgetWrapper from "./WidgetWrapper";
@@ -76,7 +76,9 @@ const UserWidget = ({ userId, picturePath }) => {
             <Typography color={medium}>{friends.length} friends</Typography>
           </Box>
         </FlexBetween>
-        <ManageAccountsOutlined />
+        <IconButton>
+          <ManageAccountsOutlined />
+        </IconButton>
       </FlexBetween>
 
       <Divider />
