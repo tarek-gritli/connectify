@@ -60,9 +60,9 @@ mongoose
   .then(() => {
     console.log("Database connected");
     app.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
-    // User.insertMany(users);
-    // Post.insertMany(posts);
-    // Comment.insertMany(comments);
+    User.insertMany(users);
+    Post.insertMany(posts);
+    Comment.insertMany(comments);
   })
   .catch((err) => {
     console.log(err);
