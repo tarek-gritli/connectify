@@ -17,7 +17,7 @@ Connectify is a full-stack social media app that allows users to connect and int
 - [x] Commenting on posts
 - [x] Liking posts
 - [x] View users who liked a particular post
-- [x] Infinite scrolling
+- [x] Light and Dark mode
 - [x] Following/Unfollowing users
 
 ## Technologies
