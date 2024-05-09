@@ -4,6 +4,7 @@ import {
   FavoriteOutlined,
   ShareOutlined,
   DeleteOutlineOutlined,
+  FileDownloadOutlined,
 } from "@mui/icons-material";
 import {
   Box,
@@ -82,6 +83,26 @@ const PostWidget = ({ _id, user, content, picturePath, likes, comments }) => {
       console.log(err);
     }
   };
+  const handleDownload = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/download/${picturePath}`,
+        {
+          responseType: "blob",
+        }
+      );
+      const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.setAttribute("download", picturePath);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const name = `${user?.firstName} ${user?.lastName}`;
   return (
     <WidgetWrapper m="2rem 0">
@@ -142,6 +163,11 @@ const PostWidget = ({ _id, user, content, picturePath, likes, comments }) => {
           {loggedInUserId === user?._id && (
             <IconButton onClick={handleDeletePost}>
               <DeleteOutlineOutlined />
+            </IconButton>
+          )}
+          {picturePath && (
+            <IconButton onClick={handleDownload}>
+              <FileDownloadOutlined />
             </IconButton>
           )}
         </FlexBetween>

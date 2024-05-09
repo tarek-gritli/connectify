@@ -7,6 +7,7 @@ import multer from "multer";
 import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
+import fs from "fs";
 import { fileURLToPath } from "url";
 import authRoutes from "./routes/auth.js";
 import { register } from "./controllers/auth.js";
@@ -47,6 +48,14 @@ const upload = multer({ storage });
 // Routes with files
 app.post("/auth/register", upload.single("picture"), register);
 app.post("/posts", verifyToken, upload.single("picture"), createPost);
+app.get("/download/:filename", (req, res) => {
+  const filename = req.params.filename;
+  const filePath = path.join(__dirname, "/public/assets", filename);
+
+  res.setHeader("Content-Disposition", `attachment; filename=${filename}`);
+  res.setHeader("Content-Type", "application/octet-stream");
+  fs.createReadStream(filePath).pipe(res);
+});
 
 // Routes
 app.use("/auth", authRoutes);
