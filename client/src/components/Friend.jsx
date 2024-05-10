@@ -6,15 +6,14 @@ import { setFriends } from "../state/reducers/auth";
 import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
 import axios from "axios";
+import { useGetAuthenticationStatus } from "../hooks/useGetAuthenticationStatus.js";
 const Friend = ({ friendId, name, userPicturePath, location }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { _id, friends } = useSelector((state) => state.user);
-  const token = useSelector((state) => state.token);
-
+  const { friends } = useSelector((state) => state.user);
+  const { _id, token } = useGetAuthenticationStatus();
   const { palette } = useTheme();
-  const primaryLight = palette.primary.light;
-  const primaryDark = palette.primary.dark;
+  const { light, dark } = palette.primary;
   const { medium, main } = palette.neutral;
 
   const isFriend = friends?.find((friend) => friend._id === friendId);
@@ -28,8 +27,7 @@ const Friend = ({ friendId, name, userPicturePath, location }) => {
         },
       }
     );
-    const friends = response.data;
-    dispatch(setFriends({ friends }));
+    dispatch(setFriends({ friends: response.data }));
   };
   const removeFriend = async () => {
     const response = await axios.patch(
@@ -41,8 +39,7 @@ const Friend = ({ friendId, name, userPicturePath, location }) => {
         },
       }
     );
-    const friends = response.data;
-    dispatch(setFriends({ friends }));
+    dispatch(setFriends({ friends: response.data }));
   };
   return (
     <FlexBetween>
@@ -75,12 +72,12 @@ const Friend = ({ friendId, name, userPicturePath, location }) => {
       {_id != friendId && (
         <IconButton
           onClick={isFriend ? () => removeFriend() : () => addFriend()}
-          sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
+          sx={{ backgroundColor: light, p: "0.6rem" }}
         >
           {isFriend ? (
-            <PersonRemoveOutlined sx={{ color: primaryDark }} />
+            <PersonRemoveOutlined sx={{ color: dark }} />
           ) : (
-            <PersonAddOutlined sx={{ color: primaryDark }} />
+            <PersonAddOutlined sx={{ color: dark }} />
           )}
         </IconButton>
       )}

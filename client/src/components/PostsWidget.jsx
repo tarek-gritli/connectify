@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "../state/reducers/auth";
 import PostWidget from "./PostWidget";
 import axios from "axios";
+import { useGetAuthenticationStatus } from "../hooks/useGetAuthenticationStatus";
 
-const PostsWidget = ({ userId, isProfile = false }) => {
+const PostsWidget = ({ isProfile = false }) => {
   const dispatch = useDispatch();
+  const { userId, token } = useGetAuthenticationStatus();
   const posts = useSelector((state) => state.posts);
-  const token = useSelector((state) => state.token);
 
   useEffect(() => {
     const getPosts = async () => {

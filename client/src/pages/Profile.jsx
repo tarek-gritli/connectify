@@ -1,6 +1,6 @@
 import { Box, useMediaQuery, Button } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
@@ -10,19 +10,19 @@ import PostsWidget from "../components/PostsWidget";
 import UserWidget from "../components/UserWidget";
 import axios from "axios";
 import { setLogout } from "../state/reducers/auth";
+import { useGetAuthenticationStatus } from "../hooks/useGetAuthenticationStatus";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
   const { userId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const loggedInUserId = useSelector((state) => state.user._id);
-  const token = useSelector((state) => state.token);
+  const { loggedInUserId, token } = useGetAuthenticationStatus();
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
 
   const deleteAccount = async () => {
     try {
-      const response = await axios.delete(
+      await axios.delete(
         `http://localhost:3000/users/delete/${loggedInUserId}`,
         {
           headers: {

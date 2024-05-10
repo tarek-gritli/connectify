@@ -22,8 +22,9 @@ import Dropzone from "react-dropzone";
 import UserImage from "./UserImage";
 import WidgetWrapper from "./WidgetWrapper";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setPosts } from "../state/reducers/auth";
+import { useGetAuthenticationStatus } from "../hooks/useGetAuthenticationStatus";
 import axios from "axios";
 
 const MyPostWidget = ({ picturePath }) => {
@@ -32,11 +33,9 @@ const MyPostWidget = ({ picturePath }) => {
   const [image, setImage] = useState(null);
   const [post, setPost] = useState("");
   const { palette } = useTheme();
-  const { _id } = useSelector((state) => state.user);
-  const token = useSelector((state) => state.token);
+  const { _id, token } = useGetAuthenticationStatus();
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
-  const mediumMain = palette.neutral.neutralMain;
-  const medium = palette.neutral.medium;
+  const { neutralMain, medium } = palette.neutral;
 
   const handlePost = async () => {
     const vals = {
@@ -130,9 +129,9 @@ const MyPostWidget = ({ picturePath }) => {
 
       <FlexBetween>
         <FlexBetween gap="0.25rem" onClick={() => setIsImage(!isImage)}>
-          <ImageOutlined sx={{ color: mediumMain }} />
+          <ImageOutlined sx={{ color: neutralMain }} />
           <Typography
-            color={mediumMain}
+            color={neutralMain}
             sx={{ "&:hover": { cursor: "pointer", color: medium } }}
           >
             Image
@@ -142,23 +141,23 @@ const MyPostWidget = ({ picturePath }) => {
         {isNonMobileScreens ? (
           <>
             <FlexBetween gap="0.25rem">
-              <GifBoxOutlined sx={{ color: mediumMain }} />
-              <Typography color={mediumMain}>Clip</Typography>
+              <GifBoxOutlined sx={{ color: neutralMain }} />
+              <Typography color={neutralMain}>Clip</Typography>
             </FlexBetween>
 
             <FlexBetween gap="0.25rem">
-              <AttachFileOutlined sx={{ color: mediumMain }} />
-              <Typography color={mediumMain}>Attachment</Typography>
+              <AttachFileOutlined sx={{ color: neutralMain }} />
+              <Typography color={neutralMain}>Attachment</Typography>
             </FlexBetween>
 
             <FlexBetween gap="0.25rem">
-              <MicOutlined sx={{ color: mediumMain }} />
-              <Typography color={mediumMain}>Audio</Typography>
+              <MicOutlined sx={{ color: neutralMain }} />
+              <Typography color={neutralMain}>Audio</Typography>
             </FlexBetween>
           </>
         ) : (
           <FlexBetween gap="0.25rem">
-            <MoreHorizOutlined sx={{ color: mediumMain }} />
+            <MoreHorizOutlined sx={{ color: neutralMain }} />
           </FlexBetween>
         )}
 

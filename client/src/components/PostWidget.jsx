@@ -19,17 +19,17 @@ import FlexBetween from "./FlexBetween";
 import Friend from "./Friend";
 import WidgetWrapper from "./WidgetWrapper";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setPost } from "../state/reducers/auth";
 import UserImage from "./UserImage";
 import axios from "axios";
+import { useGetAuthenticationStatus } from "../hooks/useGetAuthenticationStatus";
 const PostWidget = ({ _id, user, content, picturePath, likes, comments }) => {
   const [isComments, setIsComments] = useState(false);
   const [isLikes, setIsLikes] = useState(false);
   const [newComment, setNewComment] = useState("");
   const dispatch = useDispatch();
-  const token = useSelector((state) => state.token);
-  const loggedInUserId = useSelector((state) => state.user._id);
+  const { loggedInUserId, token } = useGetAuthenticationStatus();
   const isLiked = likes.find((user) => user._id === loggedInUserId) != null;
 
   const likeCount = likes.length;
@@ -50,8 +50,7 @@ const PostWidget = ({ _id, user, content, picturePath, likes, comments }) => {
       }
     );
 
-    const updatedPost = response.data;
-    dispatch(setPost({ post: updatedPost }));
+    dispatch(setPost({ post: response.data }));
   };
   const handleAddComment = async () => {
     try {
@@ -64,8 +63,7 @@ const PostWidget = ({ _id, user, content, picturePath, likes, comments }) => {
           },
         }
       );
-      const updatedPost = response.data;
-      dispatch(setPost({ post: updatedPost }));
+      dispatch(setPost({ post: response.data }));
       setNewComment("");
     } catch (err) {
       console.log(err);

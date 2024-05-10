@@ -5,11 +5,12 @@ import { useEffect } from "react";
 import WidgetWrapper from "./WidgetWrapper";
 import { setFriends } from "../state/reducers/auth";
 import axios from "axios";
+import { useGetAuthenticationStatus } from "../hooks/useGetAuthenticationStatus";
 
-const FriendListWidget = ({ userId }) => {
+const FriendListWidget = () => {
   const dispatch = useDispatch();
   const { palette } = useTheme();
-  const token = useSelector((state) => state.token);
+  const { userId, token } = useGetAuthenticationStatus();
   const friends = useSelector((state) => state.user.friends);
 
   useEffect(() => {

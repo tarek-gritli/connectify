@@ -8,17 +8,16 @@ import { Box, Typography, Divider, useTheme, IconButton } from "@mui/material";
 import UserImage from "./UserImage";
 import FlexBetween from "./FlexBetween";
 import WidgetWrapper from "./WidgetWrapper";
-import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import linkedin from "../../public/assets/linkedin.png";
+import { useGetAuthenticationStatus } from "../hooks/useGetAuthenticationStatus";
 import axios from "axios";
 
-const UserWidget = ({ userId, picturePath }) => {
+const UserWidget = ({ picturePath }) => {
   const [user, setUser] = useState(null);
   const { palette } = useTheme();
   const navigate = useNavigate();
-  const token = useSelector((state) => state.token);
+  const { userId, token } = useGetAuthenticationStatus();
   const dark = palette.neutral.dark;
   const medium = palette.neutral.dark;
   const main = palette.neutral.main;
