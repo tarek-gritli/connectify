@@ -18,8 +18,7 @@ const PostsWidget = ({ isProfile = false }) => {
             authorization: token,
           },
         });
-        const posts = response.data;
-        dispatch(setPosts({ posts }));
+        dispatch(setPosts({ posts: response.data }));
       } catch (err) {
         console.log(err);
       }
@@ -34,8 +33,7 @@ const PostsWidget = ({ isProfile = false }) => {
             },
           }
         );
-        const posts = response.data;
-        dispatch(setPosts({ posts }));
+        dispatch(setPosts({ posts: response.data }));
       } catch (err) {
         console.log(err);
       }

@@ -12,7 +12,6 @@ import {
   Divider,
   Typography,
   InputBase,
-  useTheme,
   Button,
   IconButton,
   useMediaQuery,
@@ -26,16 +25,22 @@ import { useDispatch } from "react-redux";
 import { setPosts } from "../state/reducers/auth";
 import { useGetAuthenticationStatus } from "../hooks/useGetAuthenticationStatus";
 import axios from "axios";
+import { useGetCustomPaletteColors } from "../hooks/useGetCustomPaletteColors";
 
 const MyPostWidget = ({ picturePath }) => {
   const dispatch = useDispatch();
   const [isImage, setIsImage] = useState(false);
   const [image, setImage] = useState(null);
   const [post, setPost] = useState("");
-  const { palette } = useTheme();
+  const {
+    neutralLight,
+    neutralMediumMain,
+    neutralMedium,
+    primaryMain,
+    altBackground,
+  } = useGetCustomPaletteColors();
   const { _id, token } = useGetAuthenticationStatus();
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
-  const { neutralMain, medium } = palette.neutral;
 
   const handlePost = async () => {
     const vals = {
@@ -75,7 +80,7 @@ const MyPostWidget = ({ picturePath }) => {
           value={post}
           sx={{
             width: "100%",
-            backgroundColor: palette.neutral.light,
+            backgroundColor: neutralLight,
             borderRadius: "2rem",
             padding: "1rem 2rem",
           }}
@@ -83,7 +88,7 @@ const MyPostWidget = ({ picturePath }) => {
       </FlexBetween>
       {isImage && (
         <Box
-          border={`1px solid ${medium}`}
+          border={`1px solid ${neutralMedium}`}
           borderRadius="5px"
           mt="1rem"
           p="1rem"
@@ -97,7 +102,7 @@ const MyPostWidget = ({ picturePath }) => {
               <FlexBetween>
                 <Box
                   {...getRootProps()}
-                  border={`2px dashed ${palette.primary.main}`}
+                  border={`2px dashed ${primaryMain}`}
                   p="1rem"
                   width="100%"
                   sx={{ "&:hover": { cursor: "pointer" } }}
@@ -129,10 +134,10 @@ const MyPostWidget = ({ picturePath }) => {
 
       <FlexBetween>
         <FlexBetween gap="0.25rem" onClick={() => setIsImage(!isImage)}>
-          <ImageOutlined sx={{ color: neutralMain }} />
+          <ImageOutlined sx={{ color: neutralMediumMain }} />
           <Typography
-            color={neutralMain}
-            sx={{ "&:hover": { cursor: "pointer", color: medium } }}
+            color={neutralMediumMain}
+            sx={{ "&:hover": { cursor: "pointer", color: neutralMedium } }}
           >
             Image
           </Typography>
@@ -141,23 +146,23 @@ const MyPostWidget = ({ picturePath }) => {
         {isNonMobileScreens ? (
           <>
             <FlexBetween gap="0.25rem">
-              <GifBoxOutlined sx={{ color: neutralMain }} />
-              <Typography color={neutralMain}>Clip</Typography>
+              <GifBoxOutlined sx={{ color: neutralMediumMain }} />
+              <Typography color={neutralMediumMain}>Clip</Typography>
             </FlexBetween>
 
             <FlexBetween gap="0.25rem">
-              <AttachFileOutlined sx={{ color: neutralMain }} />
-              <Typography color={neutralMain}>Attachment</Typography>
+              <AttachFileOutlined sx={{ color: neutralMediumMain }} />
+              <Typography color={neutralMediumMain}>Attachment</Typography>
             </FlexBetween>
 
             <FlexBetween gap="0.25rem">
-              <MicOutlined sx={{ color: neutralMain }} />
-              <Typography color={neutralMain}>Audio</Typography>
+              <MicOutlined sx={{ color: neutralMediumMain }} />
+              <Typography color={neutralMediumMain}>Audio</Typography>
             </FlexBetween>
           </>
         ) : (
           <FlexBetween gap="0.25rem">
-            <MoreHorizOutlined sx={{ color: neutralMain }} />
+            <MoreHorizOutlined sx={{ color: neutralMediumMain }} />
           </FlexBetween>
         )}
 
@@ -165,8 +170,8 @@ const MyPostWidget = ({ picturePath }) => {
           disabled={!post}
           onClick={handlePost}
           sx={{
-            color: palette.background.alt,
-            backgroundColor: palette.primary.main,
+            color: altBackground,
+            backgroundColor: primaryMain,
             borderRadius: "3rem",
           }}
         >

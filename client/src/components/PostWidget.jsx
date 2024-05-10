@@ -11,7 +11,6 @@ import {
   Divider,
   IconButton,
   Typography,
-  useTheme,
   Button,
   TextField,
 } from "@mui/material";
@@ -24,6 +23,7 @@ import { setPost } from "../state/reducers/auth";
 import UserImage from "./UserImage";
 import axios from "axios";
 import { useGetAuthenticationStatus } from "../hooks/useGetAuthenticationStatus";
+import { useGetCustomPaletteColors } from "../hooks/useGetCustomPaletteColors";
 const PostWidget = ({ _id, user, content, picturePath, likes, comments }) => {
   const [isComments, setIsComments] = useState(false);
   const [isLikes, setIsLikes] = useState(false);
@@ -35,9 +35,7 @@ const PostWidget = ({ _id, user, content, picturePath, likes, comments }) => {
   const likeCount = likes.length;
   console.log(comments);
 
-  const { palette } = useTheme();
-  const main = palette.neutral.main;
-  const primary = palette.primary.main;
+  const { neutralMain, primaryMain } = useGetCustomPaletteColors();
 
   const likePost = async () => {
     const response = await axios.patch(
@@ -110,7 +108,7 @@ const PostWidget = ({ _id, user, content, picturePath, likes, comments }) => {
         location={user?.location}
         userPicturePath={user?.picturePath}
       />
-      <Typography color={main} sx={{ mt: "1rem" }}>
+      <Typography color={neutralMain} sx={{ mt: "1rem" }}>
         {content}
       </Typography>
       {picturePath && (
@@ -127,7 +125,7 @@ const PostWidget = ({ _id, user, content, picturePath, likes, comments }) => {
           <FlexBetween gap="0.3rem">
             <IconButton onClick={() => likePost()}>
               {isLiked ? (
-                <FavoriteOutlined sx={{ color: primary }} />
+                <FavoriteOutlined sx={{ color: primaryMain }} />
               ) : (
                 <FavoriteBorderOutlined />
               )}
@@ -202,7 +200,9 @@ const PostWidget = ({ _id, user, content, picturePath, likes, comments }) => {
                       {comment?.user?.firstName} {comment?.user?.lastName}
                     </Typography>
                   </FlexBetween>
-                  <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
+                  <Typography
+                    sx={{ color: primaryMain, m: "0.5rem 0", pl: "1rem" }}
+                  >
                     {comment.content}
                   </Typography>
                 </FlexBetween>

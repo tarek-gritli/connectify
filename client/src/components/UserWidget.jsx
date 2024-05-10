@@ -4,7 +4,7 @@ import {
   LocationOnOutlined,
   WorkOutlineOutlined,
 } from "@mui/icons-material";
-import { Box, Typography, Divider, useTheme, IconButton } from "@mui/material";
+import { Box, Typography, Divider, IconButton } from "@mui/material";
 import UserImage from "./UserImage";
 import FlexBetween from "./FlexBetween";
 import WidgetWrapper from "./WidgetWrapper";
@@ -12,19 +12,19 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGetAuthenticationStatus } from "../hooks/useGetAuthenticationStatus";
 import axios from "axios";
+import { useGetCustomPaletteColors } from "../hooks/useGetCustomPaletteColors";
 
 const UserWidget = ({ picturePath }) => {
   const [user, setUser] = useState(null);
-  const { palette } = useTheme();
   const navigate = useNavigate();
-  const { userId, token } = useGetAuthenticationStatus();
-  const dark = palette.neutral.dark;
-  const medium = palette.neutral.dark;
-  const main = palette.neutral.main;
+  const { _id, token } = useGetAuthenticationStatus();
+  const { neutralDark, neutralMedium, neutralMain, primaryLight } =
+    useGetCustomPaletteColors();
+
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/users/${userId}`, {
+        const res = await axios.get(`http://localhost:3000/users/${_id}`, {
           headers: {
             authorization: token,
           },
@@ -54,25 +54,27 @@ const UserWidget = ({ picturePath }) => {
       <FlexBetween
         gap="0.5rem"
         pb="1.1rem"
-        onClick={() => navigate(`/profile/${userId}`)}
+        onClick={() => navigate(`/profile/${_id}`)}
       >
         <FlexBetween gap="1rem">
           <UserImage image={picturePath} />
           <Box>
             <Typography
               variant="h4"
-              color={dark}
+              color={neutralDark}
               fontWeight="500"
               sx={{
                 "&:hover": {
-                  color: palette.primary.light,
+                  color: primaryLight,
                   cursor: "pointer",
                 },
               }}
             >
               {firstName} {lastName}
             </Typography>
-            <Typography color={medium}>{friends.length} friends</Typography>
+            <Typography color={neutralMedium}>
+              {friends.length} friends
+            </Typography>
           </Box>
         </FlexBetween>
         <IconButton>
@@ -84,12 +86,12 @@ const UserWidget = ({ picturePath }) => {
 
       <Box p="1rem 0">
         <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
-          <LocationOnOutlined fontSize="large" sx={{ color: main }} />
-          <Typography color={medium}>{location}</Typography>
+          <LocationOnOutlined fontSize="large" sx={{ color: neutralMain }} />
+          <Typography color={neutralMedium}>{location}</Typography>
         </Box>
         <Box display="flex" alignItems="center" gap="1rem">
-          <WorkOutlineOutlined fontSize="large" sx={{ color: main }} />
-          <Typography color={medium}>{occupation}</Typography>
+          <WorkOutlineOutlined fontSize="large" sx={{ color: neutralMain }} />
+          <Typography color={neutralMedium}>{occupation}</Typography>
         </Box>
       </Box>
 
@@ -97,14 +99,16 @@ const UserWidget = ({ picturePath }) => {
 
       <Box p="1rem 0">
         <FlexBetween mb="0.5rem">
-          <Typography color={medium}>Profile Views</Typography>
-          <Typography color={main} fontWeight="500">
+          <Typography color={neutralMedium}>Profile Views</Typography>
+          <Typography color={neutralMain} fontWeight="500">
             {profileViews}
           </Typography>
         </FlexBetween>
         <FlexBetween>
-          <Typography color={medium}>Impressions of your post</Typography>
-          <Typography color={main} fontWeight="500">
+          <Typography color={neutralMedium}>
+            Impressions of your post
+          </Typography>
+          <Typography color={neutralMain} fontWeight="500">
             {impressions}
           </Typography>
         </FlexBetween>
@@ -113,7 +117,12 @@ const UserWidget = ({ picturePath }) => {
       <Divider />
 
       <Box p="1rem 0">
-        <Typography fontSize="1rem" color={main} fontWeight="500" mb="1rem">
+        <Typography
+          fontSize="1rem"
+          color={neutralMain}
+          fontWeight="500"
+          mb="1rem"
+        >
           Social Profiles
         </Typography>
 
@@ -121,26 +130,26 @@ const UserWidget = ({ picturePath }) => {
           <FlexBetween gap="1rem">
             <img src="../assets/twitter.png" alt="twitter" />
             <Box>
-              <Typography color={main} fontWeight="500">
+              <Typography color={neutralMain} fontWeight="500">
                 Twitter
               </Typography>
-              <Typography color={medium}>Social Network</Typography>
+              <Typography color={neutralMedium}>Social Network</Typography>
             </Box>
           </FlexBetween>
-          <EditOutlined sx={{ color: main }} />
+          <EditOutlined sx={{ color: neutralMain }} />
         </FlexBetween>
 
         <FlexBetween gap="1rem">
           <FlexBetween gap="1rem">
             <img src="../assets/linkedin.png" alt="linkedin" />
             <Box>
-              <Typography color={main} fontWeight="500">
+              <Typography color={neutralMain} fontWeight="500">
                 Linkedin
               </Typography>
-              <Typography color={medium}>Network Platform</Typography>
+              <Typography color={neutralMedium}>Network Platform</Typography>
             </Box>
           </FlexBetween>
-          <EditOutlined sx={{ color: main }} />
+          <EditOutlined sx={{ color: neutralMain }} />
         </FlexBetween>
       </Box>
     </WidgetWrapper>

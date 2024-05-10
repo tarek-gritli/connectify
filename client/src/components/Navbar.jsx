@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Box,
   IconButton,
@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setMode, setLogout } from "../state/reducers/auth";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
+import { useGetCustomPaletteColors } from "../hooks/useGetCustomPaletteColors";
 const Navbar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
   const dispatch = useDispatch();
@@ -32,16 +33,13 @@ const Navbar = () => {
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
 
   const { palette } = useTheme();
-  const neutralLight = palette.neutral.light;
-  const dark = palette.neutral.dark;
-  const background = palette.background.default;
-  const primaryLight = palette.primary.light;
-  const alt = palette.background.alt;
+  const { neutralLight, neutralDark, background, primaryLight, altBackground } =
+    useGetCustomPaletteColors();
 
   const fullName = `${user?.firstName} ${user?.lastName}`;
 
   return (
-    <FlexBetween padding="1rem 6%" backgroundColor={alt}>
+    <FlexBetween padding="1rem 6%" backgroundColor={altBackground}>
       <FlexBetween gap="1.75rem">
         <Typography
           fontWeight="bold"
@@ -79,7 +77,7 @@ const Navbar = () => {
             {palette.mode === "dark" ? (
               <DarkMode sx={{ fontSize: "25px" }} />
             ) : (
-              <LightMode sx={{ color: dark, fontSize: "25px" }} />
+              <LightMode sx={{ color: neutralDark, fontSize: "25px" }} />
             )}
           </IconButton>
           <Message sx={{ fontSize: "25px" }} />
@@ -157,7 +155,7 @@ const Navbar = () => {
               {palette.mode === "dark" ? (
                 <DarkMode sx={{ fontSize: "25px" }} />
               ) : (
-                <LightMode sx={{ color: dark, fontSize: "25px" }} />
+                <LightMode sx={{ color: neutralDark, fontSize: "25px" }} />
               )}
             </IconButton>
             <Message sx={{ fontSize: "25px" }} />

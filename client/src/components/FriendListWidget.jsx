@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Friend from "./Friend";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -6,10 +6,11 @@ import WidgetWrapper from "./WidgetWrapper";
 import { setFriends } from "../state/reducers/auth";
 import axios from "axios";
 import { useGetAuthenticationStatus } from "../hooks/useGetAuthenticationStatus";
+import { useGetCustomPaletteColors } from "../hooks/useGetCustomPaletteColors";
 
 const FriendListWidget = () => {
   const dispatch = useDispatch();
-  const { palette } = useTheme();
+  const { neutralDark } = useGetCustomPaletteColors();
   const { userId, token } = useGetAuthenticationStatus();
   const friends = useSelector((state) => state.user.friends);
 
@@ -35,7 +36,7 @@ const FriendListWidget = () => {
   return (
     <WidgetWrapper>
       <Typography
-        color={palette.neutral.dark}
+        color={neutralDark}
         variant="h5"
         fontWeight="500"
         sx={{ mb: "1.5rem" }}

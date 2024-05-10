@@ -1,8 +1,7 @@
 import { Box, useMediaQuery, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import FriendListWidget from "../components/FriendListWidget";
 import MyPostWidget from "../components/MyPostWidget";
@@ -48,7 +47,6 @@ const Profile = () => {
             },
           }
         );
-        console.log(response);
         setUser(response.data);
       } catch (err) {
         console.log(err);

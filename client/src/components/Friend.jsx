@@ -1,20 +1,20 @@
 import { PersonAddOutlined, PersonRemoveOutlined } from "@mui/icons-material";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setFriends } from "../state/reducers/auth";
 import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
 import axios from "axios";
-import { useGetAuthenticationStatus } from "../hooks/useGetAuthenticationStatus.js";
+import { useGetAuthenticationStatus } from "../hooks/useGetAuthenticationStatus";
+import { useGetCustomPaletteColors } from "../hooks/useGetCustomPaletteColors";
 const Friend = ({ friendId, name, userPicturePath, location }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { friends } = useSelector((state) => state.user);
   const { _id, token } = useGetAuthenticationStatus();
-  const { palette } = useTheme();
-  const { light, dark } = palette.primary;
-  const { medium, main } = palette.neutral;
+  const { primaryLight, primaryDark, neutralMedium, neutralMain } =
+    useGetCustomPaletteColors();
 
   const isFriend = friends?.find((friend) => friend._id === friendId);
   const addFriend = async () => {
@@ -52,19 +52,19 @@ const Friend = ({ friendId, name, userPicturePath, location }) => {
           }}
         >
           <Typography
-            color={main}
+            color={neutralMain}
             variant="h5"
             fontWeight="500"
             sx={{
               "&:hover": {
-                color: palette.primary.light,
+                color: primaryLight,
                 cursor: "pointer",
               },
             }}
           >
             {name}
           </Typography>
-          <Typography color={medium} fontSize="0.75rem">
+          <Typography color={neutralMedium} fontSize="0.75rem">
             {location}
           </Typography>
         </Box>
@@ -72,12 +72,12 @@ const Friend = ({ friendId, name, userPicturePath, location }) => {
       {_id != friendId && (
         <IconButton
           onClick={isFriend ? () => removeFriend() : () => addFriend()}
-          sx={{ backgroundColor: light, p: "0.6rem" }}
+          sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
         >
           {isFriend ? (
-            <PersonRemoveOutlined sx={{ color: dark }} />
+            <PersonRemoveOutlined sx={{ color: primaryDark }} />
           ) : (
-            <PersonAddOutlined sx={{ color: dark }} />
+            <PersonAddOutlined sx={{ color: primaryDark }} />
           )}
         </IconButton>
       )}
