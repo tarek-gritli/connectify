@@ -7,7 +7,7 @@ import { useGetAuthenticationStatus } from "../hooks/useGetAuthenticationStatus"
 
 const PostsWidget = ({ isProfile = false }) => {
   const dispatch = useDispatch();
-  const { userId, token } = useGetAuthenticationStatus();
+  const { _id, token } = useGetAuthenticationStatus();
   const posts = useSelector((state) => state.posts);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const PostsWidget = ({ isProfile = false }) => {
     const getUserPosts = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/posts/user/${userId}`,
+          `http://localhost:3000/posts/user/${_id}`,
           {
             headers: {
               authorization: token,

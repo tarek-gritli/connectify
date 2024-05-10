@@ -7,7 +7,6 @@ import {
   Select,
   MenuItem,
   FormControl,
-  useTheme,
   useMediaQuery,
 } from "@mui/material";
 import {
@@ -32,9 +31,14 @@ const Navbar = () => {
   const user = useSelector((state) => state.user);
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
 
-  const { palette } = useTheme();
-  const { neutralLight, neutralDark, background, primaryLight, altBackground } =
-    useGetCustomPaletteColors();
+  const {
+    neutralLight,
+    neutralDark,
+    background,
+    primaryLight,
+    altBackground,
+    mode,
+  } = useGetCustomPaletteColors();
 
   const fullName = `${user?.firstName} ${user?.lastName}`;
 
@@ -74,7 +78,7 @@ const Navbar = () => {
       {isNonMobileScreens ? (
         <FlexBetween gap="2rem">
           <IconButton onClick={() => dispatch(setMode())}>
-            {palette.mode === "dark" ? (
+            {mode === "dark" ? (
               <DarkMode sx={{ fontSize: "25px" }} />
             ) : (
               <LightMode sx={{ color: neutralDark, fontSize: "25px" }} />
@@ -152,7 +156,7 @@ const Navbar = () => {
               onClick={() => dispatch(setMode())}
               sx={{ fontSize: "25px" }}
             >
-              {palette.mode === "dark" ? (
+              {mode === "dark" ? (
                 <DarkMode sx={{ fontSize: "25px" }} />
               ) : (
                 <LightMode sx={{ color: neutralDark, fontSize: "25px" }} />

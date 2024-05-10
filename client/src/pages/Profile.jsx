@@ -16,7 +16,7 @@ const Profile = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { loggedInUserId, token } = useGetAuthenticationStatus();
+  const { _id: loggedInUserId, token } = useGetAuthenticationStatus();
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
 
   const deleteAccount = async () => {

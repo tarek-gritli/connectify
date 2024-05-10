@@ -11,14 +11,14 @@ import { useGetCustomPaletteColors } from "../hooks/useGetCustomPaletteColors";
 const FriendListWidget = () => {
   const dispatch = useDispatch();
   const { neutralDark } = useGetCustomPaletteColors();
-  const { userId, token } = useGetAuthenticationStatus();
+  const { _id, token } = useGetAuthenticationStatus();
   const friends = useSelector((state) => state.user.friends);
 
   useEffect(() => {
     const getFriends = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/users/${userId}/friends`,
+          `http://localhost:3000/users/${_id}/friends`,
           {
             headers: {
               authorization: token,
@@ -31,7 +31,7 @@ const FriendListWidget = () => {
       }
     };
     getFriends();
-  }, []);
+  }, [_id]);
 
   return (
     <WidgetWrapper>

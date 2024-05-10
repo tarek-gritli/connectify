@@ -29,13 +29,12 @@ const PostWidget = ({ _id, user, content, picturePath, likes, comments }) => {
   const [isLikes, setIsLikes] = useState(false);
   const [newComment, setNewComment] = useState("");
   const dispatch = useDispatch();
-  const { loggedInUserId, token } = useGetAuthenticationStatus();
+  const { _id: loggedInUserId, token } = useGetAuthenticationStatus();
   const isLiked = likes.find((user) => user._id === loggedInUserId) != null;
 
   const likeCount = likes.length;
-  console.log(comments);
 
-  const { neutralMain, primaryMain } = useGetCustomPaletteColors();
+  const { neutralMain, primaryMain, neutralDark } = useGetCustomPaletteColors();
 
   const likePost = async () => {
     const response = await axios.patch(
@@ -201,7 +200,7 @@ const PostWidget = ({ _id, user, content, picturePath, likes, comments }) => {
                     </Typography>
                   </FlexBetween>
                   <Typography
-                    sx={{ color: primaryMain, m: "0.5rem 0", pl: "1rem" }}
+                    sx={{ color: neutralDark, m: "0.5rem 0", pl: "1rem" }}
                   >
                     {comment.content}
                   </Typography>

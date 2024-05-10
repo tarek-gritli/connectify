@@ -12,5 +12,6 @@ export const useGetCustomPaletteColors = () => {
     primaryDark: palette.primary.dark,
     altBackground: palette.background.alt,
     background: palette.background.default,
+    mode: palette.mode,
   };
 };
