@@ -15,6 +15,8 @@ Connectify is a full-stack social media app that allows users to connect and int
 - [x] User profile creation and management
 - [x] Post creation
 - [x] Commenting on posts
+- [x] Image drag and drop in post creation
+- [x] Image download from posts
 - [x] Liking posts
 - [x] View users who liked a particular post
 - [x] Light and Dark mode
